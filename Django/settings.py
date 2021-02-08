@@ -78,23 +78,22 @@ WSGI_APPLICATION = 'Django.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'database.db'
-    },
     # 'default': {
-    #     'ENGINE': 'sql_server.pyodbc',
-    #     'NAME': 'KsiazkiBackup',
-    #     'HOST': '192.168.10.155',
-    #     'PORT': '1433',
-    #     'USER': 'sa',
-    #     'PASSWORD': '',
-    #     'OPTIONS': {
-    #         'driver': 'FreeTDS',
-    #         'host_is_server': True,
-    #         'extra_params': 'TDS_VERSION=1.3.1.1',
-    #     }
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': 'database.db'
     # },
+    'default': {
+        'ENGINE': 'sql_server.pyodbc',
+        'NAME': 'Django',
+        'USER': 'sa',
+        'PASSWORD': '',
+        'HOST': '192.168.10.155',
+        'PORT': '1433',
+        'OPTIONS': {
+            'driver': 'ODBC Driver 17 for SQL Server',
+            'unicode_results': True,
+        },
+    },
 }
 
 
