@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from rest_framework import generics, mixins, viewsets
-from rest_framework.authentication import TokenAuthentication
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
@@ -11,6 +11,7 @@ from .serializers import BookSerializer
 
 
 class BookViewSet(viewsets.ViewSet):
+
     def list(self, request):
         book = Book.objects.all()
         serializer = BookSerializer(book, many=True)
@@ -30,12 +31,20 @@ class BookViewSet(viewsets.ViewSet):
         serializer = BookSerializer(book)
         return Response(serializer.data)
 
+    def update(self, request, pk=None):
+        book = Book.objects.get(pk=pk)
+        serializer = BookSerializer(book, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class GenericAPIView(generics.GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin, mixins.RetrieveModelMixin, mixins.DestroyModelMixin):
     serializer_class = BookSerializer
     queryset = Book.objects.all()
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     lookup_field = 'id'
 
